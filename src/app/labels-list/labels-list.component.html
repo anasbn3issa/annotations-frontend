@@ -1,0 +1,9 @@
+<!-- labels-list.component.html -->
+<div class="component-wrapper">
+  <div [ngClass]="['labels-wrapper']">
+    <div *ngFor="let label of labels; let i = index" class="label" [ngStyle]="{'background-color': label.color}" (click)="onLabelClick(label)">
+      {{ label.text }}
+    </div>
+  </div>
+  <p class="title" (click)="openAddLabelModal()">Label list</p>
+</div>
