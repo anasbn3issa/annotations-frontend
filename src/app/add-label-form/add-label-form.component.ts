@@ -27,7 +27,6 @@ export class AddLabelFormComponent {
   constructor(private fb: FormBuilder,private labelService: LabelService,private snackBar: MatSnackBar,private dialogRef: MatDialogRef<AddLabelFormComponent>) {
     this.labelForm = this.fb.group({
       labelName: ['', Validators.required],
-      labelColor : ['', Validators.required]
     });
   }
 
@@ -38,14 +37,13 @@ export class AddLabelFormComponent {
     }
 
     const labelName = this.labelForm.get('labelName')?.value;
-    const labelColor = this.labelForm.get('labelColor')?.value;
 
     this.isLoading = true;
 
     // Call the LabelService to add the label using finalize
-    this.labelService.addLabel(labelName, labelColor).subscribe(
+    this.labelService.addLabel(labelName).subscribe(
       (response) => {
-        console.log('Label added successfully:', response);
+        console.log('Label added successfully:', labelName);
         this.snackBar.open('Label added successfully', 'Close', { duration: 2000 });
         this.labelForm.reset();
         this.dialogRef.close();

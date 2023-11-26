@@ -10,9 +10,8 @@ export class LabelService {
 
   constructor(private http: HttpClient) { }
 
-  addLabel(name: string, color: string): Observable<any> {
-    const body = { name, color };
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  addLabel(name: string): Observable<any> {
+    const body = { name };
 
     return this.http.post<any>(this.apiUrl, body);
   }

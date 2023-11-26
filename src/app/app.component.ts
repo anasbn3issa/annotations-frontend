@@ -4,13 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { LabelsListComponent } from './labels-list/labels-list.component';
 import { DocumentComponent } from './document/document.component';
 import { AddLabelFormComponent } from './add-label-form/add-label-form.component';
-
-interface Label {
-  name: string;
-  color: string;
-}
-
-
+import { Label } from './interfaces/label';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,7 +14,7 @@ interface Label {
 })
 export class AppComponent {
   title = 'annotationsFrontend';
-  lastClickedLabel: Label = {name:'', color:''};
+  lastClickedLabel: Label = {id:0,name:'', color:''};
 
 
   handleLabelClicked(label: Label): void {

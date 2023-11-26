@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Label {
-  name: string;
-  color: string;
-}
+import { AnnotationService } from '../annotation.service';
+import { LabelService } from '../label.service';
+import { Label } from '../interfaces/label';
+import { Annotation } from '../interfaces/annotation';
 
 @Component({
   selector: 'app-document',
@@ -15,8 +14,9 @@ interface Label {
 })
 export class DocumentComponent {
 
-  @Input() lastClickedLabel: Label = {name:'', color:''}; // Input to receive the last clicked label from the parent
+  @Input() lastClickedLabel: Label = {id:0, name:'', color:''}; // Input to receive the last clicked label from the parent
   @Input() text: string = '';
+  annotations : Annotation[] = [];
   selectionInfo: { selectedText: string, startPosition: number, endPosition: number } = {
     selectedText: '',
     startPosition: 0,
@@ -24,6 +24,29 @@ export class DocumentComponent {
   };
 
 
+  constructor(private annotationService : AnnotationService,private labelService: LabelService) { }
+
+  ngOnInit(): void {
+    this.getAnnotations();
+  }
+
+  getAnnotations() : void {
+    this.annotations = [];
+    this.annotationService.getAnnotations().subscribe((response) => {
+      console.log("annotations",response)
+      response.map((annotation) => {
+        const annotationData = {
+          annotatedText: annotation.annotated_text,
+          startPosition: annotation.start_position,
+          endPosition: annotation.end_position,
+          label: annotation.label,
+        }
+        this.annotations.push(annotationData);
+      })
+
+      console.log("this.annotations : ", this.annotations);
+    });
+  }
   onTextSelection(): void {
     const selection = window.getSelection();
     if (this.lastClickedLabel && selection) {
@@ -61,10 +84,39 @@ export class DocumentComponent {
 
 
         console.log('Selection Info:', this.selectionInfo);
+
+        const annotationData = {
+          start_position: this.selectionInfo.startPosition,
+          end_position: this.selectionInfo.endPosition,
+          annotated_text: this.selectionInfo.selectedText,
+          label: this.lastClickedLabel.name
+        };
+
+        console.log("annotationData", annotationData)
+
+        this.annotationService.createAnnotation(annotationData).subscribe(
+          (response) => {
+            console.log('AnnotationData added successfully:', response);
+          },
+          (error) => {
+            console.error('Error adding annotation:', error);
+          }
+        );;
       }
     }
   }
 
+
+  onExportClicked() : void {
+    this.getAnnotations();
+    const returnedObject = {
+      document: this.text,
+      annotation: this.annotations
+    };
+
+    console.log("returnedObject", returnedObject);
+
+  }
 
 
 
