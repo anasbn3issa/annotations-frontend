@@ -5,7 +5,7 @@ import { LabelService } from '../label.service';
 
 
 interface Label {
-  text: string;
+  name: string;
   color: string;
 }
 
@@ -19,8 +19,7 @@ interface Label {
 export class LabelsListComponent {
   constructor(private modalService: ModalService, private labelService: LabelService) {}
 
-  @Input() labels: Label[] = [];
-  labelz: Label[] = [];
+  labels: Label[] = [];
   @Output() labelClicked: EventEmitter<Label> = new EventEmitter<Label>();
 
   ngOnInit(): void {
@@ -39,8 +38,8 @@ export class LabelsListComponent {
 
   loadLabels(): void {
     this.labelService.getLabels().subscribe((response) => {
-      this.labelz = response;
-      console.log('Labels loaded successfully:', this.labelz);
+      this.labels = response;
+      console.log('Labels loaded successfully:', this.labels);
     });
   }
 

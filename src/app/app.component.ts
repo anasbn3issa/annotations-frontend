@@ -6,7 +6,7 @@ import { DocumentComponent } from './document/document.component';
 import { AddLabelFormComponent } from './add-label-form/add-label-form.component';
 
 interface Label {
-  text: string;
+  name: string;
   color: string;
 }
 
@@ -20,13 +20,7 @@ interface Label {
 })
 export class AppComponent {
   title = 'annotationsFrontend';
-  lastClickedLabel: Label = {text:'', color:''};
-  labels = [
-    { text: 'Label1', color: '#FF5733' },
-    { text: 'Label2', color: '#33FF57' },
-    { text: 'Label3', color: '#5733FF' },
-    { text: 'Label4', color: '#FF5733' }
-  ];
+  lastClickedLabel: Label = {name:'', color:''};
 
 
   handleLabelClicked(label: Label): void {

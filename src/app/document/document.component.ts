@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Label {
-  text: string;
+  name: string;
   color: string;
 }
 
@@ -15,7 +15,7 @@ interface Label {
 })
 export class DocumentComponent {
 
-  @Input() lastClickedLabel: Label = {text:'', color:''}; // Input to receive the last clicked label from the parent
+  @Input() lastClickedLabel: Label = {name:'', color:''}; // Input to receive the last clicked label from the parent
   @Input() text: string = '';
   selectionInfo: { selectedText: string, startPosition: number, endPosition: number } = {
     selectedText: '',
@@ -49,7 +49,7 @@ export class DocumentComponent {
         const selectedLabelColor = this.lastClickedLabel.color;
 
         const selectedLabelElement = document.createElement('p');
-        selectedLabelElement.textContent = this.lastClickedLabel.text;
+        selectedLabelElement.textContent = this.lastClickedLabel.name;
 
 
 
