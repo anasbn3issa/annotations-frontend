@@ -5,5 +5,9 @@
       {{ label.name }}
     </div>
   </div>
-  <p class="title" (click)="openAddLabelModal()">Label list</p>
+  <div class="buttons-wrapper">
+    <button mat-raised-button class="title" (click)="openAddLabelModal()">Add Label</button>
+    <button mat-raised-button class="title" (click)="clearDatabase()">Clear Database</button>
+  </div>
+
 </div>

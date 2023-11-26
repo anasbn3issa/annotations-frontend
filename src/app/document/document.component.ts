@@ -4,11 +4,12 @@ import { AnnotationService } from '../annotation.service';
 import { LabelService } from '../label.service';
 import { Label } from '../interfaces/label';
 import { Annotation } from '../interfaces/annotation';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-document',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule],
   templateUrl: './document.component.html',
   styleUrl: './document.component.css'
 })
@@ -24,7 +25,7 @@ export class DocumentComponent {
   };
 
 
-  constructor(private annotationService : AnnotationService,private labelService: LabelService) { }
+  constructor(private annotationService : AnnotationService) { }
 
   ngOnInit(): void {
     this.getAnnotations();
@@ -101,7 +102,7 @@ export class DocumentComponent {
           (error) => {
             console.error('Error adding annotation:', error);
           }
-        );;
+        );
       }
     }
   }
@@ -115,8 +116,33 @@ export class DocumentComponent {
     };
 
     console.log("returnedObject", returnedObject);
+    // Convert JavaScript object to JSON string
+    const jsonString = JSON.stringify(returnedObject, null, 2);
+    console.log(jsonString);
 
+
+    // Create a Blob with the JSON data
+    const blob = new Blob([jsonString], { type: 'application/json' });
+
+    // Create a download link
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+
+    // Set the filename for the download
+    link.download = 'exported_data.txt';
+
+    // Append the link to the DOM
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the DOM
+    document.body.removeChild(link);
   }
+
+
+
 
 
 

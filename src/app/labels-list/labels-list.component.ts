@@ -5,16 +5,18 @@ import { LabelService } from '../label.service';
 import { Label } from '../interfaces/label';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLabelFormComponent } from '../add-label-form/add-label-form.component';
+import { GeneralService } from '../general.service';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-labels-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule ,MatButtonModule],
   templateUrl: './labels-list.component.html',
   styleUrl: './labels-list.component.css'
 })
 export class LabelsListComponent {
-  constructor(private modalService: ModalService, private labelService: LabelService,private dialog: MatDialog) {}
+  constructor(private modalService: ModalService, private labelService: LabelService, private generalService: GeneralService ,  private dialog: MatDialog) {}
 
   labels: Label[] = [];
   colorsList : String[] = ["red","blue", "yellow", "aqua"];
@@ -32,7 +34,8 @@ export class LabelsListComponent {
 
   openAddLabelModal(): void {
     const dialogRef = this.dialog.open(AddLabelFormComponent, {
-      width: '300px',
+      width: '350px',
+      height: '220px'
       // Add any other configurations for your modal
     });
 
@@ -52,6 +55,16 @@ export class LabelsListComponent {
     });
   }
 
+  clearDatabase(): void {
+    this.generalService.clearDatabase().subscribe(
+      (response) => {
+        console.log('Database cleared successfully:', response);
+      },
+      (error) => {
+        console.error('Error clearing database:', error);
+      }
+    );
+  }
 
 
 
