@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../modal.service';
+import { LabelService } from '../label.service';
+
 
 interface Label {
   text: string;
@@ -15,10 +17,16 @@ interface Label {
   styleUrl: './labels-list.component.css'
 })
 export class LabelsListComponent {
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService, private labelService: LabelService) {}
 
   @Input() labels: Label[] = [];
+  labelz: Label[] = [];
   @Output() labelClicked: EventEmitter<Label> = new EventEmitter<Label>();
+
+  ngOnInit(): void {
+    this.loadLabels();
+  }
+
 
 
   onLabelClick(label: Label): void {
@@ -28,5 +36,14 @@ export class LabelsListComponent {
   openAddLabelModal(): void {
     this.modalService.openAddLabelModal();
   }
+
+  loadLabels(): void {
+    this.labelService.getLabels().subscribe((response) => {
+      this.labelz = response;
+      console.log('Labels loaded successfully:', this.labelz);
+    });
+  }
+
+
 
 }

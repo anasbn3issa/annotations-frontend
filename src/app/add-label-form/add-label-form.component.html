@@ -1,12 +1,12 @@
-<form  (ngSubmit)="onSubmit()">
+<form  [formGroup]="labelForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
-    <input matInput formControlName="labelName" placeholder="Label Name" required>
-    <mat-icon matSuffix> label</mat-icon>
+    <input matInput formControlName="labelName" placeholder="Label" required>
+    <mat-icon matSuffix>label</mat-icon>
 
   </mat-form-field>
   <mat-form-field>
     <input matInput formControlName="labelColor" placeholder="Label Color" required>
-    <mat-icon matSuffix> format_color_fill</mat-icon>
+    <mat-icon matSuffix>format_color_fill</mat-icon>
   </mat-form-field>
 
   <button type="submit" mat-raised-button color="primary">Add Label</button>
