@@ -63,9 +63,6 @@ export class LabelsListComponent {
         console.error('Error clearing database:', error);
       }
     );
-
   }
-
-
 
 }

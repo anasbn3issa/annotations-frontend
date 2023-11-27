@@ -7,3 +7,10 @@
   margin-top: 50px;
   margin-left: 200px;
 }
+
+.clarifications {
+  border-style: dotted;
+  border-color: aqua;
+  border-width: 1px;
+  margin: 40px;
+}

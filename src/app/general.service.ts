@@ -7,13 +7,18 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GeneralService {
-  private clearDBurl = 'http://127.0.0.1:8000/api/clear-database/';
+  private readonly clearDBurl = 'http://127.0.0.1:8000/api/clear-database/';
+  private readonly clearAnnotationsUrl = 'http://127.0.0.1:8000/api/clear-annotations/';
 
 
   constructor(private http: HttpClient) { }
 
   clearDatabase(): Observable<any> {
     return this.http.post(this.clearDBurl, {});
+  }
+
+  clearAnnotations(): Observable<any> {
+    return this.http.post(this.clearAnnotationsUrl, {});
   }
 
 }

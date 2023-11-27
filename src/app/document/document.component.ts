@@ -5,6 +5,7 @@ import { LabelService } from '../label.service';
 import { Label } from '../interfaces/label';
 import { Annotation } from '../interfaces/annotation';
 import { MatButtonModule } from '@angular/material/button';
+import { GeneralService } from '../general.service';
 
 @Component({
   selector: 'app-document',
@@ -25,10 +26,10 @@ export class DocumentComponent {
   };
 
 
-  constructor(private annotationService : AnnotationService) { }
+  constructor(private annotationService : AnnotationService, private generalService : GeneralService) { }
 
   ngOnInit(): void {
-    this.getAnnotations();
+    this.clearAnnotations();
   }
 
   async getAnnotations(): Promise<void> {
@@ -77,7 +78,8 @@ export class DocumentComponent {
 
         const labelNameSpan = document.createElement('span');
         labelNameSpan.textContent = ' ' + this.lastClickedLabel.name + ' ';
-        labelNameSpan.style.backgroundColor = selectedLabelColor;
+        labelNameSpan.style.backgroundColor = 'white';
+        labelNameSpan.style.borderStyle = 'dotted';
 
         // using the min and max because if we start selecting from bottom to top then the start and end will be reversed
         const range = selection.getRangeAt(0);
@@ -97,7 +99,6 @@ export class DocumentComponent {
           label: this.lastClickedLabel.name
         };
 
-        console.log("annotationData", annotationData)
 
         this.annotationService.createAnnotation(annotationData).subscribe(
           (response) => {
@@ -147,7 +148,16 @@ export class DocumentComponent {
     document.body.removeChild(link);
   }
 
-
+  clearAnnotations(): void {
+    this.generalService.clearAnnotations().subscribe(
+      (response) => {
+        console.log('Annotations cleared successfully:', response);
+      },
+      (error) => {
+        console.error('Error clearing annotations:', error);
+      }
+    );
+  }
 
 
 
