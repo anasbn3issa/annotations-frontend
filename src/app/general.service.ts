@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GeneralService {
-  private clearDBurl = 'http://127.0.0.1/api/clear-database/';
+  private clearDBurl = 'http://127.0.0.1:8000/api/clear-database/';
 
 
   constructor(private http: HttpClient) { }

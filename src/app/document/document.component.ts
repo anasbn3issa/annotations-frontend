@@ -31,23 +31,26 @@ export class DocumentComponent {
     this.getAnnotations();
   }
 
-  getAnnotations() : void {
+  async getAnnotations(): Promise<void> {
     this.annotations = [];
-    this.annotationService.getAnnotations().subscribe((response) => {
-      console.log("annotations",response)
-      response.map((annotation) => {
-        const annotationData = {
-          annotatedText: annotation.annotated_text,
-          startPosition: annotation.start_position,
-          endPosition: annotation.end_position,
-          label: annotation.label,
-        }
-        this.annotations.push(annotationData);
-      })
-
-      console.log("this.annotations : ", this.annotations);
-    });
+    try {
+      const response = await this.annotationService.getAnnotations().toPromise();
+      if(response){
+        response.map((annotation) => {
+          const annotationData = {
+            annotatedText: annotation.annotated_text,
+            startPosition: annotation.start_position,
+            endPosition: annotation.end_position,
+            label: annotation.label,
+          };
+          this.annotations.push(annotationData);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching annotations:", error);
+    }
   }
+
   onTextSelection(): void {
     const selection = window.getSelection();
     if (this.lastClickedLabel && selection) {
@@ -85,7 +88,7 @@ export class DocumentComponent {
 
         selectionDiv.appendChild(labelNameSpan);
 
-        
+
 
         const annotationData = {
           start_position: this.selectionInfo.startPosition,
@@ -109,8 +112,10 @@ export class DocumentComponent {
   }
 
 
-  onExportClicked() : void {
-    this.getAnnotations();
+  async onExportClicked() : Promise<void> {
+    await this.getAnnotations();
+    console.log("this.annotation", this.annotations);
+
     const returnedObject = {
       document: this.text,
       annotation: this.annotations

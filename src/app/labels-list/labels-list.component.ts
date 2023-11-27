@@ -36,11 +36,9 @@ export class LabelsListComponent {
     const dialogRef = this.dialog.open(AddLabelFormComponent, {
       width: '350px',
       height: '220px'
-      // Add any other configurations for your modal
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // Reload labels when the modal is closed
       this.loadLabels();
     });
   }
@@ -59,11 +57,13 @@ export class LabelsListComponent {
     this.generalService.clearDatabase().subscribe(
       (response) => {
         console.log('Database cleared successfully:', response);
+        this.loadLabels();
       },
       (error) => {
         console.error('Error clearing database:', error);
       }
     );
+
   }
 
 
