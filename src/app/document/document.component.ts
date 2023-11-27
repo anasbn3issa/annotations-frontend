@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DocumentComponent {
 
-  @Input() lastClickedLabel: Label = {id:0, name:'', color:''}; // Input to receive the last clicked label from the parent
+  @Input() lastClickedLabel: Label = {name:'', color:''}; // Input to receive the last clicked label from the parent
   @Input() text: string = '';
   annotations : Annotation[] = [];
   selectionInfo: { selectedText: string, startPosition: number, endPosition: number } = {
@@ -63,28 +63,29 @@ export class DocumentComponent {
         this.selectionInfo.selectedText = selection.toString().trim();
 
 
+        const selectedLabelColor = this.lastClickedLabel.color;
+
+        const selectionDiv = document.createElement('span');
+        selectionDiv.style.backgroundColor = selectedLabelColor;
+
+        const selectedTextSpan = document.createElement('span');
+        selectedTextSpan.textContent = this.selectionInfo.selectedText;
+        selectedTextSpan.style.backgroundColor = selectedLabelColor;
+
+        const labelNameSpan = document.createElement('span');
+        labelNameSpan.textContent = ' ' + this.lastClickedLabel.name + ' ';
+        labelNameSpan.style.backgroundColor = selectedLabelColor;
+
         // using the min and max because if we start selecting from bottom to top then the start and end will be reversed
         const range = selection.getRangeAt(0);
-
         this.selectionInfo.startPosition = Math.min(range.startOffset, range.endOffset);
         this.selectionInfo.endPosition = Math.max(range.startOffset, range.endOffset);
 
-        // Retrieve the selected label's color directly from the parent component
-        const selectedLabelColor = this.lastClickedLabel.color;
+        range.surroundContents(selectionDiv);
 
-        const selectedLabelElement = document.createElement('p');
-        selectedLabelElement.textContent = this.lastClickedLabel.name;
+        selectionDiv.appendChild(labelNameSpan);
 
-
-
-        const span = document.createElement('span');
-        span.style.backgroundColor = selectedLabelColor;
-
-        span.appendChild(selectedLabelElement);
-        range.surroundContents(span);
-
-
-        console.log('Selection Info:', this.selectionInfo);
+        
 
         const annotationData = {
           start_position: this.selectionInfo.startPosition,

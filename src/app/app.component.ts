@@ -14,7 +14,7 @@ import { Label } from './interfaces/label';
 })
 export class AppComponent {
   title = 'annotationsFrontend';
-  lastClickedLabel: Label = {id:0,name:'', color:''};
+  lastClickedLabel: Label = {name:'', color:''};
 
 
   handleLabelClicked(label: Label): void {
